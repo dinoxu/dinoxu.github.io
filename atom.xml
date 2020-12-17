@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dinoxu.github.io</id>
     <title>迪诺的星辰大海</title>
-    <updated>2020-12-15T09:41:01.152Z</updated>
+    <updated>2020-12-17T09:05:11.630Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dinoxu.github.io"/>
     <link rel="self" href="https://dinoxu.github.io/atom.xml"/>
@@ -10,6 +10,54 @@
     <logo>https://dinoxu.github.io/images/avatar.png</logo>
     <icon>https://dinoxu.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 迪诺的星辰大海</rights>
+    <entry>
+        <title type="html"><![CDATA[plotly库 ]]></title>
+        <id>https://dinoxu.github.io/post/plotly-ku/</id>
+        <link href="https://dinoxu.github.io/post/plotly-ku/">
+        </link>
+        <updated>2020-12-15T11:17:25.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="安装">安装</h1>
+<p><a href="https://github.com/giampaolo/psutil/blob/master/INSTALL.rst">psutil</a><br>
+<a href="https://github.com/plotly/orca">orca</a><br>
+The Electron runtime requires the presence of an active X11 display server, but many server Linux distributions (e.g. Ubuntu Server) do not include X11 by default. If you do not wish to install X11 on your server, you may install and run orca with Xvfb instead.</p>
+<p>解决方法：在软链文件中增加以下脚本，使执行不需要X11<br>
+#!/bin/bash<br>
+xvfb-run -a /path/to/orca-X.Y.Z-x86_64.AppImage &quot;$@&quot;</p>
+<h1 id="使用">使用</h1>
+<h2 id="表格">表格</h2>
+<p><a href="https://plotly.com/python/figure-factory-table/">Plotly开发文档：figure-factory-table</a><br>
+<a href="https://plotly.com/python/table/">Plotly开发文档：table</a></p>
+<ul>
+<li>
+<p>中文显示乱码<br>
+1.（<code>可选</code>）在/usr/share/fonts/   中新建文件夹  myfonts<br>
+2.将中文字体.ttf 文件放入到文件夹中（可以直接从win系统获取：C:\Windows\Fonts）<br>
+3.（<code>可选</code>）设置字体的配置文件  vim /etc/fonts/font.conf<br>
+4.（<code>可选</code>）增加 <code>&lt;dir&gt;/usr/share/fonts/myfont&lt;/dir&gt;</code>  保存后退出<br>
+5.刷新字体缓存命令：fc-cache<br>
+6.查看字体列表命令: fc-list<br>
+7.重启项目</p>
+</li>
+<li>
+<p>create_table()修改字体属性</p>
+</li>
+</ul>
+<pre><code>import plotly.io as pio
+import plotly.figure_factory as ff
+fill_color = ['#FFFFFF']+['#000000'] * 3 + ['#993366'] * 4 + ['#336699'] * 5
+ fig = ff.create_table(table_data,font_colors=fill_color) # 根据行修改字体颜色
+fig.update_layout(font=dict(
+        family=&quot;Microsoft YaHei&quot;,  # 所有标题文字的字体
+        size=18,  # 所有标题文字的大小
+         )
+ )
+fig.show()
+pio.write_image(fig, 'name.png',width='1200')
+</code></pre>
+<h2 id="其他">其他</h2>
+<p><a href="https://www.jianshu.com/p/4f4daf47cc85">Plotly参数详解</a></p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[pycharm自动添加头文件注释]]></title>
         <id>https://dinoxu.github.io/post/pycharm-zi-dong-tian-jia-tou-wen-jian-zhu-shi/</id>

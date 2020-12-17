@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-            <head>
+        <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>迪诺的星辰大海</title>
+        <title>plotly库  | 迪诺的星辰大海</title>
         <link rel="stylesheet" href="https://dinoxu.github.io/styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -54,64 +54,90 @@
         </header>
         <div class="mdui-container ">
                 <div class="mdui-row">
-                        <div class="mdui-col-md-10 mdui-col-offset-md-1 mdui-m-t-1">
-                            <div class="mdui-row-md-2 mdui-row-xs-1">
-                                
-                                
-
-                    
-                              
-                               
-                                <article class="animated fadeIn" style="animation-delay:1s;animation-duration: 2s">
-                                        <div class="mdui-col mdui-p-a-1">
-                                          <div class="archives mdui-p-a-3">
-                                            <div class="mdui-typo-body-2 mdui-m-b-1">2020-12-15</div>
-                                            <div class="mdui-m-b-2 archives-title"><a href="https://dinoxu.github.io/post/plotly-ku/">plotly库 </a></div>
-                                            <div class="mdui-typo-subheading mdui-m-b-1 mdui-text-truncate"></div>
-                                          </div>
-                                </article>
-                                
-                                
-                               
-                                <article class="animated fadeIn" style="animation-delay:1.3s;animation-duration: 2s">
-                                        <div class="mdui-col mdui-p-a-1">
-                                          <div class="archives mdui-p-a-3">
-                                            <div class="mdui-typo-body-2 mdui-m-b-1">2020-12-15</div>
-                                            <div class="mdui-m-b-2 archives-title"><a href="https://dinoxu.github.io/post/pycharm-zi-dong-tian-jia-tou-wen-jian-zhu-shi/">pycharm自动添加头文件注释</a></div>
-                                            <div class="mdui-typo-subheading mdui-m-b-1 mdui-text-truncate"></div>
-                                          </div>
-                                </article>
-                                
-                                
-                               
-                                
-                                
-
-                    
-                              
-                               
-                                
-                               
-                                
-                               
-                                <article class="animated fadeIn" style="animation-delay:1.6s;animation-duration: 2s">
-                                        <div class="mdui-col mdui-p-a-1">
-                                          <div class="archives mdui-p-a-3">
-                                            <div class="mdui-typo-body-2 mdui-m-b-1">2018-12-12</div>
-                                            <div class="mdui-m-b-2 archives-title"><a href="https://dinoxu.github.io/post/hello-gridea/">Hello Gridea</a></div>
-                                            <div class="mdui-typo-subheading mdui-m-b-1 mdui-text-truncate"><p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
+                        <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
+                                <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
+                                    <div class="post-title  mdui-m-b-1">plotly库 </div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2020-12-15 19:17:25">2020-12-15 / 2 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><h1 id="安装">安装</h1>
+<p><a href="https://github.com/giampaolo/psutil/blob/master/INSTALL.rst">psutil</a><br>
+<a href="https://github.com/plotly/orca">orca</a><br>
+The Electron runtime requires the presence of an active X11 display server, but many server Linux distributions (e.g. Ubuntu Server) do not include X11 by default. If you do not wish to install X11 on your server, you may install and run orca with Xvfb instead.</p>
+<p>解决方法：在软链文件中增加以下脚本，使执行不需要X11<br>
+#!/bin/bash<br>
+xvfb-run -a /path/to/orca-X.Y.Z-x86_64.AppImage &quot;$@&quot;</p>
+<h1 id="使用">使用</h1>
+<h2 id="表格">表格</h2>
+<p><a href="https://plotly.com/python/figure-factory-table/">Plotly开发文档：figure-factory-table</a><br>
+<a href="https://plotly.com/python/table/">Plotly开发文档：table</a></p>
+<ul>
+<li>
+<p>中文显示乱码<br>
+1.（<code>可选</code>）在/usr/share/fonts/   中新建文件夹  myfonts<br>
+2.将中文字体.ttf 文件放入到文件夹中（可以直接从win系统获取：C:\Windows\Fonts）<br>
+3.（<code>可选</code>）设置字体的配置文件  vim /etc/fonts/font.conf<br>
+4.（<code>可选</code>）增加 <code>&lt;dir&gt;/usr/share/fonts/myfont&lt;/dir&gt;</code>  保存后退出<br>
+5.刷新字体缓存命令：fc-cache<br>
+6.查看字体列表命令: fc-list<br>
+7.重启项目</p>
+</li>
+<li>
+<p>create_table()修改字体属性</p>
+</li>
+</ul>
+<pre><code>import plotly.io as pio
+import plotly.figure_factory as ff
+fill_color = ['#FFFFFF']+['#000000'] * 3 + ['#993366'] * 4 + ['#336699'] * 5
+ fig = ff.create_table(table_data,font_colors=fill_color) # 根据行修改字体颜色
+fig.update_layout(font=dict(
+        family=&quot;Microsoft YaHei&quot;,  # 所有标题文字的字体
+        size=18,  # 所有标题文字的大小
+         )
+ )
+fig.show()
+pio.write_image(fig, 'name.png',width='1200')
+</code></pre>
+<h2 id="其他">其他</h2>
+<p><a href="https://www.jianshu.com/p/4f4daf47cc85">Plotly参数详解</a></p>
 </div>
-                                          </div>
+                                    <div class="mdui-divider mdui-m-b-2"></div>
+                                    <div class="mdui-row-xs-2 post-fenye">
+                                       
+                                        <div class="mdui-col"> </div>
+                                        
+
+                                        
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://dinoxu.github.io/post/pycharm-zi-dong-tian-jia-tou-wen-jian-zhu-shi/">pycharm自动添加头文件注释</a></div> </div>
+                                       
+                                      </div>
+                                   
+                                    <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
+                                    
+                                     <script src="https://dinoxu.github.io/media/scripts/Valine.min.js"></script>
+ <div class="comment"></div>
+
+<script>
+      new Valine({
+            el: '.comment',
+
+
+
+            path: window.location.pathname,
+            pageSize: 30,
+            avatar:'mm', 
+       })
+    </script> 
+<script>
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+           if ($(window.location.hash).length) {
+              $('html, body').animate({scrollTop: $(window.location.hash).offset().top-90}, 1000);
+              clearInterval(checkExist);
+           }
+        }, 100);
+    }
+</script>
                                 </article>
-                                
-                                
-                                
-                              </div>
-                                                            <nav class="mdui-m-t-5">
-                                
-                                
-                                </nav>     
+
                                     
                         </div>
                       </div>
@@ -119,7 +145,7 @@
                 
 
               </div>
-                     <footer class="footer mdui-m-t-5 mdui-text-center">
+                    <footer class="footer mdui-m-t-5 mdui-text-center">
                <nav class="social-links">
                       <ul>
                       
