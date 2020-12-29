@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-            <head>
+        <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>迪诺的星辰大海</title>
+        <title>python开发环境部署 | 迪诺的星辰大海</title>
         <link rel="stylesheet" href="https://dinoxu.github.io/styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -54,41 +54,107 @@
         </header>
         <div class="mdui-container ">
                 <div class="mdui-row">
-                        <div class="mdui-col-md-10 mdui-col-offset-md-1 mdui-m-t-1">
-                            <div class="mdui-row-md-2 mdui-row-xs-1">
-                                
-                                
+                        <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
+                                <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
+                                    <div class="post-title  mdui-m-b-1">python开发环境部署</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2020-12-29 11:36:54">2020-12-29 / 2 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><h1 id="安装">安装</h1>
+<pre><code>$ wget https://www.python.org/ftp/python/2.7.14/Python-2.7.14.tgz 
+sudo tar -zxvf Python-2.7.14.tgz  -C /usr/local/
+$  cd /usr/local/Python-2.7.14
+#prefix 参数是指把 python 安装在 /usr/local/python2.7 文件夹下
+$ sudo ./configure --prefix=/usr/local/python2.7&amp;&amp; sudo make &amp;&amp; sudo make install
+</code></pre>
+<h1 id="多版本安装">多版本安装</h1>
+<p>建立软链接（ln 命令源路径必须是绝对路径，否则创建出来的软链接无效。）</p>
+<pre><code>sudo rm -rf /usr/bin/python
+sudo ln -s /usr/local/python2.7/python2 /usr/bin/python
+sudo rm -rf /usr/bin/python3
+sudo ln -s /usr/local/python3.6/bin/python3 /usr/bin/python3
+</code></pre>
+<h1 id="检查">检查</h1>
+<pre><code>which python #查看python命令的可执行文件存放路径
+pip/pip3 -V # 查看pip的版本号
+</code></pre>
+<h1 id="ide设置">IDE设置</h1>
+<h2 id="pycharm">pycharm</h2>
+<ul>
+<li>头文件设置：File -  Settings - Editor - File and Code Templates - Python Script:</li>
+</ul>
+<pre><code>#!/usr/bin/env python
+#-*- coding:utf-8 -*-
+ '''
+  @author: dinoxu
+  @license: (C) Copyright 2020-2021, Node Supply Chain Manager Corporation Limited.
+  @contact: xxx@emal.com
+  @software: pycharm
+  @file: ${NAME}.py
+  @time: ${DATE} ${TIME}
+  @desc:
+  '''
+import platform
+reload(sys)
+sys.setdefaultencoding('utf8')
 
-                    
-                              
-                               
-                                <article class="animated fadeIn" style="animation-delay:1s;animation-duration: 2s">
-                                        <div class="mdui-col mdui-p-a-1">
-                                          <div class="archives mdui-p-a-3">
-                                            <div class="mdui-typo-body-2 mdui-m-b-1">2020-12-29</div>
-                                            <div class="mdui-m-b-2 archives-title"><a href="https://dinoxu.github.io/post/python-kai-fa-huan-jing-bu-shu/">python开发环境部署</a></div>
-                                            <div class="mdui-typo-subheading mdui-m-b-1 mdui-text-truncate"></div>
-                                          </div>
+DEBUG = False
+if(platform.system()=='Windows'):
+    DEBUG = True
+elif(platform.system()=='Linux'):
+    DEBUG = False
+else:
+    DEBUG = False
+
+
+if __name__ == &quot;__main__&quot;:
+    pass
+</code></pre>
+<ul>
+<li>linux远程开发<br>
+--Tools - Deployment - Configuration... -  Connection（tab） ：选择Type=SFTP，完善相关信息。<br>
+--同上 - Mapplings：映射本地目录<br>
+--通过Files - settings - Project - Project Interpreter：通过设置按钮，配置远程python解释器。<br>
+设置成功后，可以通过Tools - Deployment -Upload to...上传文件，也可以在Tools - Deployment -Options...中设置保存的同时上传。</li>
+</ul>
+</div>
+                                    <div class="mdui-divider mdui-m-b-2"></div>
+                                    <div class="mdui-row-xs-2 post-fenye">
+                                       
+                                        <div class="mdui-col"> </div>
+                                        
+
+                                        
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://dinoxu.github.io/post/plotly-ku/">plotly库 </a></div> </div>
+                                       
+                                      </div>
+                                   
+                                    <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
+                                    
+                                     <script src="https://dinoxu.github.io/media/scripts/Valine.min.js"></script>
+ <div class="comment"></div>
+
+<script>
+      new Valine({
+            el: '.comment',
+
+
+
+            path: window.location.pathname,
+            pageSize: 30,
+            avatar:'mm', 
+       })
+    </script> 
+<script>
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+           if ($(window.location.hash).length) {
+              $('html, body').animate({scrollTop: $(window.location.hash).offset().top-90}, 1000);
+              clearInterval(checkExist);
+           }
+        }, 100);
+    }
+</script>
                                 </article>
-                                
-                                
-                               
-                                <article class="animated fadeIn" style="animation-delay:1.3s;animation-duration: 2s">
-                                        <div class="mdui-col mdui-p-a-1">
-                                          <div class="archives mdui-p-a-3">
-                                            <div class="mdui-typo-body-2 mdui-m-b-1">2020-12-15</div>
-                                            <div class="mdui-m-b-2 archives-title"><a href="https://dinoxu.github.io/post/plotly-ku/">plotly库 </a></div>
-                                            <div class="mdui-typo-subheading mdui-m-b-1 mdui-text-truncate"></div>
-                                          </div>
-                                </article>
-                                
-                                
-                                
-                              </div>
-                                                            <nav class="mdui-m-t-5">
-                                
-                                
-                                </nav>     
+
                                     
                         </div>
                       </div>
@@ -96,7 +162,7 @@
                 
 
               </div>
-                     <footer class="footer mdui-m-t-5 mdui-text-center">
+                    <footer class="footer mdui-m-t-5 mdui-text-center">
                <nav class="social-links">
                       <ul>
                       
