@@ -57,8 +57,9 @@
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
                                     <div class="post-title  mdui-m-b-1">python开发环境部署</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2020-12-29 11:36:54">2020-12-29 / 2 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><h1 id="安装">安装</h1>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2020-12-29 11:36:54">2020-12-29 / 3 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><!-- more -->
+<h1 id="安装">安装</h1>
 <pre><code>$ wget https://www.python.org/ftp/python/2.7.14/Python-2.7.14.tgz 
 sudo tar -zxvf Python-2.7.14.tgz  -C /usr/local/
 $  cd /usr/local/Python-2.7.14
@@ -115,11 +116,48 @@ if __name__ == &quot;__main__&quot;:
 --通过Files - settings - Project - Project Interpreter：通过设置按钮，配置远程python解释器。<br>
 设置成功后，可以通过Tools - Deployment -Upload to...上传文件，也可以在Tools - Deployment -Options...中设置保存的同时上传。</li>
 </ul>
+<p>##pip</p>
+<ul>
+<li>
+<p>uninstall : python -m pip uninstall pip</p>
+</li>
+<li>
+<p>pip install --upgrade pip</p>
+</li>
+<li>
+<p>源设置<br>
+-- windows： C:\Users\xxx\pip.ini<br>
+-- linux/mac: mkdir ~/.pip; vim ~/.pip/pip.conf</p>
+</li>
+</ul>
+<pre><code>#pip源配置文件可以放置的位置
+Linux/Unix:
+/etc/pip.con
+~/.pip/pip.conf （每一个我都找了都没有，所以我是在这个文件夹中创建的pip.conf文件）
+~/.config/pip/pip.conf
+
+Mac OSX:
+~/Library/Application Support/pip/pip.conf
+~/.pip/pip.conf
+/Library/Application Support/pip/pip.conf
+
+Windows:
+%APPDATA%\pip\pip.ini
+%HOME%\pip\pip.ini
+C:\Documents and Settings\All Users\Application Data\PyPA\pip\pip.conf (Windows XP)
+C:\ProgramData\PyPA\pip\pip.conf (Windows 7及以后)
+</code></pre>
+<pre><code>[global]
+index-url = http://pypi.douban.com/simple #豆瓣源，可以换成其他的源
+trusted-host = pypi.douban.com      #添加豆瓣源为可信主机，要不然可能报错
+disable-pip-version-check = true     #取消pip版本检查，排除每次都报最新的pip
+timeout = 120
+</code></pre>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> </div>
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://dinoxu.github.io/post/linux-fu-wu-qi-guan-li/">Linux服务器管理</a></div></div>
                                         
 
                                         

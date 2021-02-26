@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+        <head>
+        <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
+        <meta charset="utf-8">
+        <title>clang | 迪诺的星辰大海</title>
+        <link rel="stylesheet" href="https://dinoxu.github.io/styles/main.css">
+        <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
+        <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+        <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+         <script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+         <script >hljs.initHighlightingOnLoad();</script>
+
+    </head>
+    <body>
+              <header class="header mdui-m-b-5">      
+            <div class="container  ">
+                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="https://dinoxu.github.io">迪诺的星辰大海</a></div>
+                <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">温故而知新</div>
+           
+            <nav id="nav" class="mdui-text-center animated fadeInDown" style="animation-delay: 0.6s">
+                   
+                            <li><a href="/">首页</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/archives">归档</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/tags">标签</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/post/about">关于</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                  </nav>
+                </div>
+        </header>
+        <div class="mdui-container ">
+                <div class="mdui-row">
+                        <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
+                                <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
+                                    <div class="post-title  mdui-m-b-1">clang</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2021-01-14 10:29:30">2021-01-14 / 11 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>预处理器会删除所有注释。通过执行clang -E mycode.c &gt; mycode.i可以看到这一点，这将给您一个mycode.i文件，其中包含所有预处理，但没有注释。在</p>
+<p>您可以使用#pragma或未被剥离并被编译器忽略的操作。</p>
+<p>tokken：表示来自预处理器的单个令牌。</p>
+<pre><code> 令牌实际上是源代码的片段。 首先解析源代码
+ 转换成AST和游标之前先转换成令牌。
+
+ 令牌是从解析的TranslationUnit实例获取的。
+</code></pre>
+<p>course</p>
+<p>在Clang AST中有两个基本单元是 statements (Stmt) 和 declarations (Decl)。</p>
+<p>Clang用三种基本数据结构来描述AST：<br>
+Type 类型<br>
+Decl 声明<br>
+Stmt 陈述</p>
+<p>clang -Xclang -ast-dump -fsyntax-only D:\UGit\KOServer\KOServer\server\zonesvr\module_shop\handler_shop_test.cpp&gt;&gt;D:\handler_shop_test.txt</p>
+<p>在阅读代码之前有必要先了解RecursiveASTVisitor/FrontEndAction/ASTConsumer的概念以及相互关系。</p>
+<p>isitor/Action/Consumer结构<br>
+RecursiveASTVisitor<br>
+查找AST中的节点，既可以遍历AST，也可以使用Clang封装好的算法——RecursiveASTVisitor。继承该类并实现VisitCXXRecordDecl，该方法就在访问CXXRecordDecl节点时被触发。（CXXRecordDecl表示C++ class/union/struct）</p>
+<p>FrontEndAction<br>
+该类与编译实例打交道，词法分析、语法分析等过程都被编译实例隐藏了，编译实例会触发FrontEndAction定义好的方法，并把编译过程中的详细信息都告诉它。如编译哪个文件，编译参数等等。</p>
+<p>FrontendAction是一个接口，它允许用户指定的actions作为编译的一部分来执行。</p>
+<p>ASTConsumer<br>
+ASTConsumer是FrontAction的一个子过程，在ASTConsumer中可以拿到整个编译单元，调用visitor进行遍历。</p>
+<p>FrontEndAction(编译实例获得AST入口)——》ASTConsumer（获得编译单元）——》RecursiveASTVisitor（遍历AST）<br>
+*ASTContext是编译实例保存所有AST信息的一种数据结构，主要包括编译期间的符号表和AST原始形式。</p>
+<pre><code>clang -Xclang -ast-dump &lt;oc源文件&gt;
+
+TranslationUnitDecl
+|- TypedefDecl
+|- ...
+|- FunctionDecl
+|   |- ParamVarDecl
+|   |- ...
+`- ...
+
+</code></pre>
+<p>在遍历AST的时候，需要从该数据结构中提取节点的相关信息，常用的遍历方法一般都是先序遍历或者层次遍历。<br>
+在遍历过程中，遇到了一个节点就进行检查。<br>
+CursorKind指的是这个节点在AST中的位置例如（函数，类，参数定义等）<br>
+TypeKind指的是这个节点的语义类别，例如这个参数的类别是const char，int等类别。<br>
+get_children()<br>
+&quot;&quot;&quot;<br>
+这个方法用来获取其子节点列表的迭代器。<br>
+&quot;&quot;&quot;<br>
+get_tokens()<br>
+'''<br>
+得到了其每个分词的列表的迭代器。<br>
+'''</p>
+<p>解析C++符号修饰别名(mangled name)<br>
+相比C语言，C++支持函数重载、类、模版等各种特性，如果C++的符号修饰仍按照C那样直接使用对应名称，虽然可读性很好，却不可避免的会出现各种错乱，于是C++符号修饰别名(mangled name)被设计出来， 用来解决上述问题，然而修饰规则取决于编译器实现，没有统一标准，比如gcc、msvc就各有一套，但好在都提供了相应接口进行解析(demangle)，这里有个网站http://demangler.com/可以在线解析</p>
+<p>Mangled name的结构(borland) - https://blog.csdn.net/ccfxue/article/details/52796836<br>
+Mangled name的结构<br>
+mangle后的函数名结构是@UnitName@ClassName@FunctionName@$Params</p>
+<p>所谓静态分析是指在不运行待分析的程序的前提下进行分析，那么动态分析自然就是记录程序实际运行时的函数调用情况了。<br>
+分析C++的调用图，还是借助编译器比较实在。</p>
+<p>动态：与静态分析相比，它能获得更多的信息，比如函数调用的先后顺序和次数；不过也有一定的缺点，比如程序中语句的某些分支可能没有执行到，这些分支中调用的函数自然就没有记录下来。</p>
+<p>一是借助gprof的call graph功能（参数-q），二是利用GCC的 -finstrument-functions 参数。<br>
+使用gcc的-finstrument-functions选项进行函数跟踪<br>
+gdb：https://blog.csdn.net/jfu22/article/details/102528660<br>
+https://blog.csdn.net/piaopiaopiaopiaopiao/article/details/105834121</p>
+<p>用Perl脚本分析gprof的输出，生成Graphviz的dot输入，就能绘制call graph了。</p>
+<p>GCC的-finstrument-functions 参数的作用是在程序中加入hook，让它在每次进入和退出函数的时候分别调用下面这两个函数：<br>
+void __cyg_profile_func_enter( void *func_address, void *call_site )<br>
+<strong>attribute</strong> ((no_instrument_function));</p>
+<p>void <strong>cyg_profile_func_exit ( void *func_address, void *call_site )<br>
+<strong>attribute</strong> ((no_instrument_function));<br>
+当然，这两个函数本身不能被钩住（使用no_instrument_function这个__attribute</strong>），不然就反反复复万世不竭了:) 这里获得的是函数地址，需要用binutils中的addr2line这个小工具转换为函数名，如果是C++函数，还要用c++filt进行name demangle。</p>
+<p>从适应能力上看，源码分析法是最强的，即便源码中有语法错，头文件不全也没关系，它照样能分析个八九不离十。<br>
+至于动态分析，要求最高——程序需得运行起来。<br>
+而基于编译器的分析法对源码的要求要高一些，至少能编译通过（gcc 参数 -c）——能产生object file，不一定要链接得到可执行文件。这至少要求源码没有语法错，其中调用的函数不一定有定义(definition)，但要有声明(declaration)，也就是说头文件要齐全。</p>
+<p>https://blog.csdn.net/unbutun/article/details/2828839?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-2.control&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-2.control<br>
+calltree  2.3<br>
+下载地点 http://linux.softpedia.com/progDownload/calltree-Download-971.html<br>
+或者<br>
+http://mirror.lzu.edu.cn/software/calltree/calltree-2.3.tar.bz2</p>
+<p>gprof 2.18.0.20080103   在ubuntu/debian下直接安装即可<br>
+http://citeseer.ist.psu.edu/graham82gprof.html</p>
+<p>kprof 1.4.3 (在ubuntu/debian下直接用apt-get安装)<br>
+http://kprof.sourceforge.net/</p>
+<p>静态<br>
+静态分析又有两种方法，一是分析源码，二是分析编译后的目标文件。<br>
+Doxygen是源码文档化工具，也能绘制调用图，它似乎是自己分析源码获得函数调用关系的。<br>
+GNU cflow也是类似的工具，不过它似乎偏重分析流程图（flowchart）。</p>
+<p>给编译器打补丁，让它在编译时顺便记录函数调用关系：CodeViz（其灵感来自Martin Devera (Devik) 的工具）就属于此类，它（1.0.9版）给GCC 3.4.1打了个补丁<br>
+让编译器自己dump出调用关系，然后分析分析：egypt的思路</p>
+<p>用cflow工具生成代码函数调用关系<br>
+https://www.freesion.com/article/8192424715/<br>
+https://blog.csdn.net/Wind4study/article/details/53366419?utm_source=blogxgwz5&amp;utm_medium=distribute.pc_relevant_download.none-task-blog-baidujs-1.nonecase&amp;depth_1-utm_source=distribute.pc_relevant_download.none-task-blog-baidujs-1.nonecase</p>
+<p>egypt + graphviz生成C/C++源代码调用图（一）<br>
+https://blog.csdn.net/kh815/article/details/103073736?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-6&amp;spm=1001.2101.3001.4242</p>
+<p>pvtrace c/c++函数调用关系生成工具<br>
+https://download.csdn.net/download/frcheng/8892599?utm_medium=distribute.pc_relevant.none-task-download-BlogCommendFromBaidu-5.control&amp;depth_1-utm_source=distribute.pc_relevant.none-task-download-BlogCommendFromBaidu-5.control</p>
+<p>绘制函数调用图（call graph）（1）：专栏开篇<br>
+https://blog.csdn.net/benkaoya/article/details/79750745<br>
+绘制函数调用图（call graph）（4）：doxygen + graphviz<br>
+https://blog.csdn.net/benkaoya/article/details/79763668?utm_source=blogxgwz5<br>
+绘制函数调用图（call graph）（3）：codeviz + graphviz<br>
+https://blog.csdn.net/benkaoya/article/details/79752738?utm_source=blogxgwz4</p>
+<p>ps：分析源码获得的调用图的质量取决于分析工具对编程语言的理解程度，比如能不能找出正确的C++重载函数。</p>
+<p>clang plugin获取函数调用链，但替换的clang编译器的语法规则较xcode clang严格很多，导致出现很多编译问题，这里耗费的人力比较大；<br>
+clang提供了两种方法：ASTMatchers和RecursiveASTVisitor，RecursiveASTVisitor有两种方式实现，一是clang plugin，二是libtooling</p>
+<ul>
+<li>clang plugin：clang插件作为编译的一部分，在编译器运行时加载，很容易集成到构建环境中。这样通过替换xcode中clang编译器和加载clang插件分析AST，可以完全控制clang AST。<br>
+clang plugin在编译器运行时能够拿到完整的AST，但替换的clang编译器会出现很多编译问题，导致业务接入成本和解决编译问题的人力成本大大加大。</li>
+</ul>
+<p>libtooling：不需要在编译器运行时加载，针对每个源程序生成相应的分析源码以及对应的AST，但同样的都是用RecursiveASTVisitor访问AST。<br>
+libtooling分析AST无需编译，但整个过程需要逐层遍历，是由上至下的分析查找，并将系统类库和函数分析遍，还会存在重复分析，这样导致分析耗时特别长。</p>
+<p>clang的ASTMatcher，速度快，可以让我们高效的匹配到我们想要的节点；其内部可以嵌套多个ASTMatcher，通过调用构造函数创建，或者构建成一个ASTMatchers的树，使得匹配更加具体准确；配合上clang-query的快速检验正确性，将使我们效率成倍提升。</p>
+<p>存在的问题是ASTMatcher没有在编译阶段获取AST，获取的节点数据可能没有clang plugin数据全。</p>
+<p>对于C++语言，分析函数调用关系链常用的几种经典做法包括：</p>
+<p>语法树分析</p>
+<p>编译器数据</p>
+<p>运行时插桩或hook</p>
+<p>一般情况下，我们也会从静态和动态的角度来获取函数之间的调用关系，也就是静态分析和动态分析，所谓静态分析是指在不执行代码的情况下对其进行分析评估的过程，即在编译前分析源代码获得函数调用关系链。那么动态分析自然就是记录程序实际运行时的函数调用情况。</p>
+<p>静态分析又有两种方法，一是分析源码（例如doxygen），二是分析编译后的目标文件（例如IDA）。分析源码获得的调用图的质量取决于分析工具对编程语言的理解程度，比如能不能找出正确的C++重载函数。</p>
+<p>静态代码分析工具汇总<br>
+https://www.jianshu.com/p/03f6845ee32c</p>
+<p>各类分析函数调用关系图的工具<br>
+https://blog.csdn.net/unbutun/article/details/2828839?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-2.control&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-2.control</p>
+<p>一种基于libclang的函数调用关系生成方法<br>
+https://www.doc88.com/p-3317610750780.html</p>
+<p>How to write RecursiveASTVisitor based ASTFrontendActions.-https://clang.llvm.org/docs/RAVFrontendAction.html</p>
+<p>如何编写基于 ASTFrontendActions 的 RecursiveASTVisitor-https://blog.csdn.net/qq_23599965/article/details/90696621</p>
+<p>利用Clang（Python接口）来解析C++<br>
+https://my.oschina.net/u/4361248/blog/3558918</p>
+<p>（）原创）clang的python接口教程（二）<br>
+https://blog.csdn.net/wangtua/article/details/78612331</p>
+<p>使用libclang解析C++代码<br>
+https://blog.csdn.net/qq_23599965/article/details/90636948</p>
+<p>https://www.dazhuanlan.com/2019/10/16/5da6bcad62610/</p>
+</div>
+                                    <div class="mdui-divider mdui-m-b-2"></div>
+                                    <div class="mdui-row-xs-2 post-fenye">
+                                       
+                                        <div class="mdui-col"> </div>
+                                        
+
+                                        
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://dinoxu.github.io/post/linux-fu-wu-qi-guan-li/">Linux服务器管理</a></div> </div>
+                                       
+                                      </div>
+                                   
+                                    <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
+                                    
+                                     <script src="https://dinoxu.github.io/media/scripts/Valine.min.js"></script>
+ <div class="comment"></div>
+
+<script>
+      new Valine({
+            el: '.comment',
+
+
+
+            path: window.location.pathname,
+            pageSize: 30,
+            avatar:'mm', 
+       })
+    </script> 
+<script>
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+           if ($(window.location.hash).length) {
+              $('html, body').animate({scrollTop: $(window.location.hash).offset().top-90}, 1000);
+              clearInterval(checkExist);
+           }
+        }, 100);
+    }
+</script>
+                                </article>
+
+                                    
+                        </div>
+                      </div>
+    
+                
+
+              </div>
+                    <footer class="footer mdui-m-t-5 mdui-text-center">
+               <nav class="social-links">
+                      <ul>
+                      
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      </ul>
+                    </nav>
+                    <div class="copyright">
+                      <p>Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> <br/> Theme <a href="https://github.com/alterfang/gridea-theme-song/" target="_blank"  title="宋"  >Song</a> by <a href="https://shanbu.fun/" target="_blank"  title="山卜方" >shanbufun</a> </p>
+                  </div>
+                  
+              </footer>
+    </body>
+</html>
